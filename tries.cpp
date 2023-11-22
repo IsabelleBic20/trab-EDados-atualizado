@@ -10,15 +10,15 @@ using namespace std;
 
 class No {
 public:
-    No* filhos[26];//array para armazenar os filhos
-    bool fimpalavra;//se é o fim da palavra 
-    
+    No* f[26];
+    bool folha;
+        
     // Inicializando nó
     No() {
-        fimpalavra = false; // Inicializa como não sendo o fim de uma palavra
+        folha = false; 
         
         for (int i = 0; i < 26; i++) {
-            filhos[i] = nullptr;//inicializando filhos como null
+            f[i] = nullptr;//inicializando nos como null
         }
     }
 };
@@ -27,7 +27,7 @@ class Trie {
 public:
     No* raiz;
 
-    Trie() {//iniciando a trie como vazia
+    Trie() {//inicializando trie
         raiz = new No();
     }
 
@@ -37,24 +37,24 @@ public:
 
         for (int h = 0; h < k; h++) {
             int j = W[h] - 'a';
-            if (x->filhos[j] == nullptr) {
-                x->filhos[j] = new No();//se filho nao existir cria novo nó
+            if (x->f[j] == nullptr) {
+                x->f[j] = new No();//se filho nao existir cria novo nó
             }
-            x = x->filhos[j]; //indo para prox no
+            x = x->f[j]; //indo para prox no
         }
 
-        x->fimpalavra = true;//último nó é fim da palavra
+        x->folha= true;//último nó é fim da palavra
     }
 
     void buscarTrie(No* x, const string& w) {
         int k = w.size();
         for (int l = 0; l < k; l++) {
             int j = w[l] - 'a';
-            if (x->filhos[j] == nullptr) {
+            if (x->f[j] == nullptr) {
                 cout << "Nenhuma palavra" <<endl;
                 return;
             }
-            x = x->filhos[j];//move para prox no
+            x = x->f[j];//move para prox no
         }
 
         buscaautomatica(x, w);//faz a busca do prefixo 
@@ -66,14 +66,14 @@ private:
             return;
         }
 
-        if (x->fimpalavra) {
+        if (x->folha) {
             cout << palavra << endl;
         }
 
         for (int i = 0; i < 26; i++) {
-            if (x->filhos[i] != nullptr) {
+            if (x->f[i] != nullptr) {
                 char letra = 'a' + i;
-                buscaautomatica(x->filhos[i], palavra + letra);
+                buscaautomatica(x->f[i], palavra + letra);
             }
         }
     }
